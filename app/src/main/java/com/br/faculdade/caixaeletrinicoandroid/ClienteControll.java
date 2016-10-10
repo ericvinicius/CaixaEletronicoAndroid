@@ -1,29 +1,29 @@
 package com.br.faculdade.caixaeletrinicoandroid;
 
-import android.provider.ContactsContract;
-
 import com.br.faculdade.caixaeletrinicoandroid.model.Cliente;
 
 /**
  * Created by eric on 12/09/16.
  */
 public class ClienteControll {
-    private String conta;
-    private String agencia;
-    private String senha;
+    private static String conta;
+    private static String agencia;
+    private static String senha;
 
-    public ClienteControll(String conta, String agencia, String senha) {
-        this.conta = conta;
-        this.agencia = agencia;
-        this.senha = senha;
+    public static Cliente getCliente(String conta, String agencia) {
+        ClienteControll.conta = conta;
+        ClienteControll.agencia = agencia;
+        return getCliente();
     }
 
-    public ClienteControll(String conta, String agencia) {
-        this.conta = conta;
-        this.agencia = agencia;
+    public static Cliente getCliente(String conta, String agencia, String senha){
+        ClienteControll.conta = conta;
+        ClienteControll.agencia = agencia;
+        ClienteControll.senha = senha;
+        return getCliente();
     }
 
-    public Cliente getCliente() {
+    private static Cliente getCliente() {
         for(Cliente cliente : DataController.getClientes()){
             if(cliente.getConta().equals(conta) && cliente.getAgencia().equals(agencia)){
                 if(senha != null && cliente.getSenha().equals(senha)){
@@ -32,6 +32,11 @@ public class ClienteControll {
                 return cliente;
             }
         }
+        return null;
+    }
+
+    public Cliente getClienteRemote() {
+
         return null;
     }
 }

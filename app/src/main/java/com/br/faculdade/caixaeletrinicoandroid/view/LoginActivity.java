@@ -33,9 +33,12 @@ public class LoginActivity extends AppCompatActivity {
                 String conta = editConta.getText().toString();
                 String senha = editSenha.getText().toString();
                 String agencia = editAgencia.getText().toString();
-                Cliente cliente = new ClienteControll(conta, agencia, senha).getCliente();
+                Cliente cliente = ClienteControll.getCliente(conta, agencia, senha);
+
                 editConta.setText("");
+                editAgencia.setText("");
                 editSenha.setText("");
+
                 if(cliente != null){
                     goToMain();
                     return;

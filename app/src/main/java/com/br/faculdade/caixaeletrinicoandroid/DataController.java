@@ -30,4 +30,18 @@ public class DataController {
     public static void setClienteLogado(Cliente clienteLogado) {
         DataController.clienteLogado = clienteLogado;
     }
+
+    public static void saca(BigDecimal valor) {
+        BigDecimal novoSaldo = DataController.getClienteLogado().getSaldo().subtract(valor);
+        DataController.getClienteLogado().setSaldo(novoSaldo);
+    }
+
+    public static void transferePara(BigDecimal valor, String agencia, String conta) {
+        Cliente clienteBeneficiado = ClienteControll.getCliente(agencia, conta);
+        BigDecimal saldo = clienteBeneficiado.getSaldo();
+        clienteBeneficiado.setSaldo(saldo.add(valor));
+
+        Cliente clienteLogado = getClienteLogado();
+        clienteLogado.setSaldo(clienteLogado.getSaldo().subtract(valor));
+    }
 }

@@ -57,8 +57,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             BigDecimal valor = new BigDecimal(editSacar.getText().toString());
-            BigDecimal novoSaldo = DataController.getClienteLogado().getSaldo().subtract(valor);
-            DataController.getClienteLogado().setSaldo(novoSaldo);
+            DataController.saca(valor);
 
             saldo.setText(DataController.getClienteLogado().getSaldo().toString());
             editSacar.setText("");
@@ -73,13 +72,9 @@ public class MainActivity extends AppCompatActivity {
             String conta = editConta.getText().toString();
             BigDecimal valor = new BigDecimal(editValor.getText().toString());
 
-            Cliente cliente = new ClienteControll(conta, agencia).getCliente();
-            cliente.setSaldo(cliente.getSaldo().add(valor));
+            DataController.transferePara(valor, agencia, conta);
 
-            BigDecimal novoSaldo = DataController.getClienteLogado().getSaldo().subtract(valor);
-            DataController.getClienteLogado().setSaldo(novoSaldo);
-
-            saldo.setText(novoSaldo.toString());
+            saldo.setText(DataController.getClienteLogado().getSaldo().toString());
         }
     }
 
