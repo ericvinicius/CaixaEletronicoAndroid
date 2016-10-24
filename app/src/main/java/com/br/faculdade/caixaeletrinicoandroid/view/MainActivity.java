@@ -1,20 +1,17 @@
 package com.br.faculdade.caixaeletrinicoandroid.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.br.faculdade.caixaeletrinicoandroid.ClienteControll;
-import com.br.faculdade.caixaeletrinicoandroid.DataController;
 import com.br.faculdade.caixaeletrinicoandroid.R;
-import com.br.faculdade.caixaeletrinicoandroid.model.Cliente;
+import com.br.faculdade.caixaeletrinicoandroid.dao.DataController;
 
 import java.math.BigDecimal;
 
@@ -26,23 +23,17 @@ public class MainActivity extends AppCompatActivity {
     Button botaoSacar;
     TextView editSacar;
 
-
-    Button botaoTransferencia;
-    private EditText editConta;
-    private EditText editValor;
-    private EditText editAgencia;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         loadViews();
+        DataController.atualizaMovimentacoes();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                goToMovimentacoes();
             }
         });
 
@@ -50,7 +41,13 @@ public class MainActivity extends AppCompatActivity {
         saldo.setText(DataController.getClienteLogado().getSaldo().toString());
 
         botaoSacar.setOnClickListener(new SacarAction());
-        botaoTransferencia.setOnClickListener(new TransferenciaAction());
+    }
+
+    private void goToMovimentacoes() {
+        if(DataController.getClienteLogado().getMovimentacoes().size() > 0){
+            Intent intent = new Intent(this, MovimentacoesActivity.class);
+            startActivity(intent);
+        }
     }
 
     private class SacarAction implements View.OnClickListener{
@@ -64,20 +61,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class TransferenciaAction implements View.OnClickListener{
-
-        @Override
-        public void onClick(View v) {
-            String agencia = editAgencia.getText().toString();
-            String conta = editConta.getText().toString();
-            BigDecimal valor = new BigDecimal(editValor.getText().toString());
-
-            DataController.transferePara(valor, agencia, conta);
-
-            saldo.setText(DataController.getClienteLogado().getSaldo().toString());
-        }
-    }
-
 
 
     private void loadViews() {
@@ -86,11 +69,6 @@ public class MainActivity extends AppCompatActivity {
         saldo = (TextView) findViewById(R.id.text_saldo);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         editSacar = (TextView) findViewById(R.id.edit_text_sacar);
-
-        botaoTransferencia = (Button) findViewById(R.id.button_tranfenrencia);
-        editConta = (EditText) findViewById(R.id.edit_text_tranferencia_conta);
-        editValor = (EditText) findViewById(R.id.edit_text_tranferencia_valor);
-        editAgencia = (EditText) findViewById(R.id.edit_text_tranferencia_agencia);
 
     }
 

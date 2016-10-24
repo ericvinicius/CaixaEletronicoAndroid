@@ -7,8 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 
-import com.br.faculdade.caixaeletrinicoandroid.ClienteControll;
 import com.br.faculdade.caixaeletrinicoandroid.R;
+import com.br.faculdade.caixaeletrinicoandroid.dao.DataController;
 import com.br.faculdade.caixaeletrinicoandroid.model.Cliente;
 
 /**
@@ -24,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
         loadViews();
 
@@ -33,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
                 String conta = editConta.getText().toString();
                 String senha = editSenha.getText().toString();
                 String agencia = editAgencia.getText().toString();
-                Cliente cliente = ClienteControll.getCliente(conta, agencia, senha);
+                Cliente cliente = DataController.getCliente(conta, agencia, senha);
 
                 editConta.setText("");
                 editAgencia.setText("");
